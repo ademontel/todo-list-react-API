@@ -10,3 +10,10 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+li:hover > * {
+visibility: visible;
+float: right;
+}
+.icono-oculto{
+    visibility: hidden;
+}
