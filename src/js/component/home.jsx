@@ -12,6 +12,10 @@ const Home = () => {
     const cargarTareas = async () => {
         try {
             const resp = await fetch(urlUser);
+            if(resp.status == 404){
+                crearUsuario()
+                return null
+            }
             const data = await resp.json();
             //console.log(data);
             //console.log(data.todos);
@@ -26,6 +30,21 @@ const Home = () => {
     useEffect(() => {
         cargarTareas();
     }, []);
+
+    const crearUsuario = async () => {
+		try {
+			const resp = await fetch(urlUser, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" }
+			})
+			if (resp.status == 201) {
+				cargarTareas()
+			}
+		} catch (error) {
+			console.log(error)
+			return false
+		}
+	}
 
     // Agrgar una tarea "todo"
     const agregarTarea = async () => {
@@ -96,11 +115,11 @@ const Home = () => {
                 </ul>
                 <hr className="border border-secondary border-1 opacity-30"></hr>
                 <span className="text-secondary-emphasis">
-                    {listaDeTareas.length} items left
+                    {listaDeTareas && listaDeTareas.length} items left
                 </span>
                 <br />
                 <span className="text-secondary-emphasis">
-                    {listaDeTareas.length === 0 ? "No hay tareas, agrega una" : ""}
+                    {listaDeTareas && listaDeTareas.length === 0 ? "No hay tareas, agrega una" : ""}
                 </span>
             </div>
         </div>
